@@ -1,0 +1,817 @@
+---
+title: "Análise exploratória e descritiva inicial do I SINCID" 
+subtitle: "I Seminário Interdisciplinar de Ciência de Dados LInDa"
+author: "João Pedro Albino"
+format: html
+editor: visual
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+```{r carregando_bibliotecas}
+#| echo: false
+
+# Carregando as bibliotecas referentes
+if (!("readxl") %in% installed.packages()) install.packages("readxl")
+library(readxl)
+
+if (!("tidyverse") %in% installed.packages()) install.packages("tidyverse")
+library(tidyverse)
+
+if(!"wordcloud" %in% installed.packages()) install.packages("wordcloud")
+library(wordcloud)
+
+if(!"wordcloud2" %in% installed.packages()) install.packages("wordcloud2")
+library(wordcloud2)
+
+if(!"RColorBrewer" %in% installed.packages()) install.packages("RColorBrewer")
+library(RColorBrewer)
+
+if(!"tm" %in% installed.packages()) install.packages("tm")
+library(tm)
+
+if(!"magrittr" %in% installed.packages()) install.packages("magrittr")
+library(magrittr)
+ 
+```
+
+
+## Introdução
+
+*Ciência de Dados* é uma área interdisciplinar que envolve coleta, processamento, análise e interpretação de dados com o objetivo de extrair conhecimento e *insights*[^1] úteis que podem ser utilizados para tomada de decisões[^2], realizar previsões[^3], otimização[^4] e muito mais.
+
+Por representar uma concepção moderna, a ciência de dados se refere à integração e colaboração de diferentes disciplinas ou campos do conhecimento visando abordar questões complexas de maneira mais completa e integrada, ou seja, como um todo e não de maneira compartimentada.
+
+E também por tratar-se de uma *disciplina* - no sentido de converter-se em novo ramo do conhecimento, tipicamente estudado no ensino superior - recentemente estabelecida como tal, e um campo emergente de pesquisa interdisciplinar na sua origem, o Grupo de Pesquisa **LinDa** (Laboratório de Inteligência de Dados) idealizou e promoveu, o primeiro seminário em ciência de dados da região de Bauru, em outubro de 2023.
+
+Composto por profissionais de diferentes áreas do conhecimento e também por alunos do *Programa de Pós-graduação em Mídia e Tecnologia* (PPG-MiT), da Faculdade de Arquitetura, Artes, Comunicação e Design (FAAC) da Unesp - Campus de Bauru, o grupo de pesquisa LInDa tem como objetivo realizar pesquisas relacionadas à “Ciência de Dados”, e em particular estudar estruturas de dados aonde seja possível extrair **inteligência**.
+
+Neste contexto, **inteligência de dados** na nomenclatura do grupo de pesquisa, refere-se ao estudo e implementação de ferramentas e métodos analíticos para estabelecer uma melhor interpretação dos dados coletados transformados em informações para assim aprimorar sua análise e compreensão de forma a promover uma melhor tomada de decisão e permitir sua utilização em diferentes áreas do conhecimento. 
+
+O grupo de pesquisa LInDa tem como missão pesquisar, de forma multidisciplinar, tópicos relacionados à ciência baseada em dados, onde seja possível extrair conhecimento e propor soluções e algoritmos para trabalhar em temas transversais tais como: *big data*, *cidades inteligentes*, *internet das coisas*, gráficos de conhecimento, inteligência artificial, dentre outros, combinados em diferentes campos de trabalho em estatística e computação para que sejam melhor analisadas e interpretadas e possam contribuir para tomadas de decisões mais assertivas.
+
+Portanto, este **I SINCID LINDA** - *I Seminário Interdisciplinar de Ciência de Dados LInDa* - executado pelos componentes do grupo de pesquisa, foi realizado na modalidade híbrida[^5] e teve como principal desafio abordar *aplicações*, *desafios* e *implicações* na **análise** e no **uso** **dos dados** em diferentes contextos. O seminário visou incentivar a colaboração entre especialistas de diversas áreas e contribuir para uma compreensão mais profunda e multidimensional do campo da Ciência de Dados.
+
+Tendo por base estes objetivos, este primeiro evento buscou também incentivar a colaboração e a troca de conhecimentos entre áreas distintas.
+
+Realizado com o apoio do **PPG-MiT**, contou também com apoio financeiro e de logística da [Diretoria da Faculdade de Arquitetura, Artes, Comunicação e Design](https://www.faac.unesp.br/#!/sobre-a-faac/administracao/diretoria/) da FAAC, recursos financeiros do [PROAP](https://www.faac.unesp.br/#!/pos-graduacao/mestrado-e-doutorado/midia-e-tecnologia---doutorado/recursos-financeiros-do-proap/) - **Programa de Apoio à Pós-graduação -** da **Coordenação de Aperfeiçoamento de Pessoal de Nível Superior** - CAPES -, além do apoio e colaboração de diferentes patrocinadores[^6] o I SINCID LINDA buscou transcender as barreiras tradicionais das disciplinas individuais, tais como: *Engenharia*; *Ciências Humanas* e *Tecnologia*; e foi idealizado para incentivar a colaboração e a troca de conhecimentos entre áreas distintas.
+
+Contando com um conjunto interdisciplinar de palestrantes convidados, as apresentações realizadas no seminário explorou diferentes formas de aplicações, debateu os preementes desafios no mundo de hoje sobre o uso dos dados e procurou mostrar quais as implicações do emprego da ciência de dados em suas diversas áreas de atuação.
+
+O seminário contou também com apresentação e discussão de trabalhos submetidos e aprovados nos três Grupos de Trabalho (GTs) além da apresentação e debates sobre os trabalhos desenvolvidos por integrantes atuais e egressos do grupo LInDa.
+
+Visando avaliar o seminário, solicitou-se aos participantes que se inscreveram, e mesmo àqules que não puderam ou conseguiram se inscrever ou participar do evento, que opinassem sobre sua estrutura, organização e conteúdo, sugestões de melhorias além de solicitar também sugestões à respeito de temas ou tópicos visando aprimorar as próximas conferências. Para tanto, foi elaborado um questionário de pesquisa em Google Forms. 
+
+Nos próximos tópicos, será apresentada a Análise Exploratória de Dados (AED) referente aos dados coletados com o questionário. 
+
+A AED é procedimento aplicado em conjuntos de dados (ou "datasets") tabulados (dados dispostos em colunas e linhas), de modo a resumir suas características principais, frequentemente utilizando métodos visuais para facilitar sua percepção.
+
+Para a análise exploratória e visualização de dados, foram utilizados a *linguagem R* e o *ambiente integrado de desenvolvimento RStudio*.
+
+```{r importando_dados}
+#| echo: false
+# Importando do arquivo Excel para o RStudio
+analise_isincid <- read_excel("~/Downloads/GitHub/I-SINCID/dados/ead_isincid.xlsx")
+```
+
+Participaram dessa pesquisa `r nrow(analise_isincid)` respondentes.
+
+## Análise Exploratória de Dados - Fundamentação teórica
+
+a linguagem R. A linguagem R é  uma linguagem de programação bastante utilizada para análise e visualização de dados. Para criar gráficos em R, você pode utilizar o pacote ggplot2, que é um dos pacotes mais utilizados para esse fim.
+
+
+## Resultados Obtidos
+
+**Gênero** dos respondentes:
+
+```{r genero}
+#| echo: false
+# Utilizando gráficos definidos em "R para Ciência de Dados (2ª edição)" em português
+# Versão inicial em português em: https://cienciadedatos.github.io/pt-r4ds/. Acesso em: 30 nov. 2023. 
+
+# Gênero
+sexo <- factor(analise_isincid$genero, labels = c("Feminino", "Masculino"))
+ggplot(
+  data = analise_isincid,
+  aes (x = sexo)) +
+    geom_bar(fill = "blue") +
+    ggtitle("                      Gênero dos respondentes") +
+    xlab( "Gênero") + 
+    theme_classic()
+
+```
+
+**Faixa etária** dos respondentes:
+
+```{r idade}
+#| echo: false
+# Descobrir as ocorrências
+#table(analise_isincid$faixa_etaria)
+
+# Ocorrências, neste dataset "19 a 24 anos", "25 a 34 anos", "35 a 44 anos", 
+#                            "45 a 54 anos", "55 a 64 anos" e "+ de 65  anos".
+# Não ocorreram neste dataset "até 18 anos".
+idade <- factor(analise_isincid$faixa_etaria, 
+                labels = c("19 a 24 anos", "25 a 34 anos", "35 a 44 anos",
+                           "45 a 54 anos", "55 a 64 anos", "+ de 65  anos"))
+# Faixa etária
+ggplot(
+  data = analise_isincid,
+  aes (x = idade)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                      Faixa etária dos respondentes") +
+  xlab( "Faixa Etária") + 
+  theme_classic()
+
+```
+
+Dos respondentes do questionário, **quantas pessoas se inscreveram ou não no seminário**:
+
+```{r partipou_ou_nao}
+#| echo: false
+# Descobrir as ocorrências
+#table(analise_isincid$participou)
+participante <- factor(analise_isincid$participou, labels = c("Sim", "Não"))
+
+ggplot(
+  data = analise_isincid,
+  aes (x = participante)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                      Participou do seminário") +
+  xlab( "Participou") + 
+  theme_classic()
+
+```
+
+Opinião sobre **o seminário como um todo**:
+
+```{r avaliacao_seminario}
+#| echo: false
+# Avaliação do seminário
+# Descobrir as ocorrências
+# table(analise_isincid$avalie_seminario)
+
+# Ocorrências, neste dataset  "3-Satisfatório", "4-Bom" e "5-Excelente/Satisfatório"".
+# Não presentes no dataset: "1-Insatisfatório"e "2-Abaixo da média"                           
+avaliacao <- factor(analise_isincid$avalie_seminario, 
+                labels = c("Satisfatório","Bom","Excelente/Satisfatório"))
+# Avaliação do seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = avaliacao)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação do seminário") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+O que você achou do **conteúdo das apresentações**
+
+```{r avaliacao_conteudo}
+#| echo: false
+# Avaliação conteúdo das apresentações
+# Descobrir as ocorrências
+#table(analise_isincid$conteudo_apresentacoes_avalie)
+
+# Ocorrências, neste dataset  "3-Satisfatório", "4-Bom" e "5-Excelente/Satisfatório".
+# Não presentes no dataset: "1-Insatisfatório"e "2-Abaixo da média"                           
+avalie_conteudo <- factor(analise_isincid$conteudo_apresentacoes_avalie, 
+                    labels = c("Satisfatório","Bom","Excelente"))
+# Avaliação do conteúdo do seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_conteudo)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação do conteúdo do seminário") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Avaliação sobre a **qualidade das apresentações**
+
+```{r avaliacao_qualidade}
+#| echo: false
+# Avaliação da qualidade das apresentações
+# Descobrir as ocorrências
+#table(analise_isincid$qualidade_apresentacoes_avalie)
+
+# Ocorrências, neste dataset "2-Abaixo da média", "3-Satisfatório", "4-Bom" e "5-Excelente/Satisfatório".
+# Não presentes no dataset: "1-Insatisfatório"                           
+avalie_qualidade_apresentacoes <- factor(analise_isincid$qualidade_apresentacoes_avalie, 
+                          labels = c("Abaixo da média","Satisfatório","Bom","Excelente"))
+# Avaliação a qualidade das apresentações
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_qualidade_apresentacoes)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação da qualidade das apresentções") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Avaliação sobre a **organização do seminário**
+
+```{r avaliacao_organizacao}
+#| echo: false
+# Avaliação da organização do seminário
+# Descobrir as ocorrências
+#table(analise_isincid$organizacao_evento_avalie)
+
+# Ocorrências, neste dataset "3-Satisfatório", "4-Bom" e "5-Excelente/Satisfatório".
+# Não presentes no dataset: "1-Insatisfatório" e "2-Abaixo da média".                           
+avalie_organizacao_evento <- factor(analise_isincid$organizacao_evento_avalie, 
+                                         labels = c("Satisfatório","Bom","Excelente"))
+# Avaliação da organização do seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_organizacao_evento)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação da organização do seminário") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Avaliação sobre o **formato do seminário**
+
+```{r avaliacao_formatoo}
+#| echo: false
+# Avaliação do formato do seminário
+# Descobrir as ocorrências
+#table(analise_isincid$formato_seminario_adequado)
+
+# Ocorrências, neste dataset "3-Neutro/Não sei dizer", "4-Bom" e "5-Concordo totalmente/Excelente".
+# Não presentes no dataset: "1-Discordo totalmente" e "2-Discordo".                           
+avalie_formato_evento <- factor(analise_isincid$formato_seminario_adequado, 
+                                    labels = c("Neutro/Não sei dizer","Bom","Concordo totalmente/Excelente"))
+# Avaliação do formato do seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_formato_evento)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação da formato do seminário") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Avaliação sobre o **duração do seminário**?
+
+```{r avaliacao_duracao}
+#| echo: false
+# Duração do seminário
+# Descobrir as ocorrências
+#table(analise_isincid$duracao_seminario)
+
+# Ocorrências, neste dataset "1-Muito longo", "2-Adequado", "3-Muito curto" e "4-Não sei dizer".
+avalie_duracao_seminario <- factor(analise_isincid$duracao_seminario, 
+                                labels = c("Muito longo", "Adequado", "Muito curto", "Não sei dizer"))
+# Avaliação da duração do seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_duracao_seminario)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Avaliação da duração do seminário") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Avaliação se o **conteúdo do seminário atendeu as expectativas**
+
+```{r avaliacao_expectativas}
+#| echo: false
+# Conteúdo do seminário atendeu as suas expectativas
+# Descobrir as ocorrências
+#table(analise_isincid$conteudo_seminario_expectativas)
+
+# Ocorrências, neste dataset "1-Sim" e "3-Talvez/Parcialmente".
+# Não presentes no dataset: "2-Não"                           
+avalie_conteudo_expectativa <- factor(analise_isincid$conteudo_seminario_expectativas, 
+                                   labels = c("Sim","Talvez/Parcialmente"))
+# Conteúdo do seminário atendeu as suas expectativa
+ggplot(
+  data = analise_isincid,
+  aes (x = avalie_conteudo_expectativa)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Conteúdo atendeu as expectativa") +
+  xlab( "Escala de avaliação") + 
+  theme_classic()
+
+```
+
+Descreva os **motivos do seminário ter atendido as expectativas**
+
+```{r motivos_atender_expectativas}
+#| echo: false
+# Descreva o motivo do seminário ter atendido as suas expectativas
+# Núvem de palavras
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$conteudo_seminario_avalie)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , usamos o pacote magrittr
+
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação se o seminário atendeu as expectativas", side=3, line = 3)
+print("Principais ocorrências do seminário ter atendido as expectativas")
+for (k in 1:length (which(pmax(df$freq) > 2))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}
+
+```
+
+Indicação do/da(s) **melhor(es) apresentadoras(es) ou palestrante(s)**
+
+```{r melhor_apresentador}
+#| echo: false
+# Melhor apresentador ou palestrante
+# Descobrir as ocorrências
+
+melhor_palestra <- analise_isincid$apresentador_palestra_melhor
+nenhum <- length(na.omit(str_match(melhor_palestra, "Nenhum")))
+beatriz <- length(na.omit(str_match(melhor_palestra, "Beatriz Milz")))
+juliano <- length(na.omit(str_match(melhor_palestra, "Juliano Maurício de Carvalho")))
+alan <- length(na.omit(str_match(melhor_palestra, "Alan Angeluci")))
+jefferson <- length(na.omit(str_match(melhor_palestra, "Jefferson Mariano"))) 
+apresentador_gt <- length(na.omit(str_match(melhor_palestra, "artigo do GT")))
+apresentador_linda <- length(na.omit(str_match(melhor_palestra, "Grupo de estudos LInDa")))
+elaine <- length(na.omit(str_match(melhor_palestra, "Elaine Gatto")))
+carlos <- length(na.omit(str_match(melhor_palestra, "Carlos Rozaboni")))
+casos_melhor_palestra <- c(nenhum, beatriz, juliano, alan, jefferson, apresentador_gt, apresentador_linda, elaine, carlos)
+names(casos_melhor_palestra) <- c("Nenhum(a)", "Beatriz Milz (R-ladies)", "Juliano de Carvalho (UNESP)", 
+                                  "Alan Angeluci (USP)", "Jefferson Mariano (IBGE)", "Apres./autor(a) de artigo", 
+                                  "Apres. Grupo LInDa", "Elaine Gatto", "Carlos Rozaboni (Data Guvi)")
+#sort(casos_melhor_palestra)
+
+df_melhores <- data.frame( melhores = c("Nenhum(a)", "Beatriz Milz (R-ladies)", "Juliano de Carvalho (UNESP)", 
+                                        "Alan Angeluci (USP)", "Jefferson Mariano (IBGE)", 
+                                        "Apres./autor(a) de artigo", 
+                                        "Apres. Grupo LInDa", "Elaine Gatto", "Carlos Rozaboni (Data Guvi)"),
+                           grupo = casos_melhor_palestra
+  
+)
+  
+ggplot(df_melhores, aes(x=melhores, y=grupo)) +
+  geom_col(width=.6, fill=alpha('blue',3), col='black')+
+#  geom_text(aes(label=paste(perc,"%")),nudge_y=1.4)+
+  labs(x='Apresentador(a)', y='Votação')+
+  ggtitle('Melhor apresentador(a) ou palestrante')+
+  theme_minimal()+
+  coord_flip()  
+
+```
+
+Discorrer sobre o/a(s) **melhor(es) apresentadoras(es) ou palestrante(s)**
+
+```{r motivo_melhor_apresentador}
+#| echo: false
+# Analisando as respostas discursivas sobre qual melhor apresentador ou palestrante
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$apresentador_palestra_melhor_avalie)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação sobre o(a) melhor palestrante/apresentador(a)", side=3, line = 3)
+print("Principais ocorrências o(a) melhor palestrante/apresentador(a)")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}  
+
+```
+
+Discorrer sobre o **gostou no seminário:**
+
+```{r gostou_seminario}
+#| echo: false
+# Analisando as respostas discursivas o que mais gostou não seminário
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$mais_gostou_seminario)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação sobre o que mais gostou no seminário", side=3, line = 3)
+print("Principais ocorrências sobre o que mais gostou no seminário")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}    
+  
+```
+
+Discorrer sobre do que **NÃO gostou no seminário:**
+
+```{r nao_gostou_seminario}
+#| echo: false
+# Analisando as respostas discursivas sobre o que NÃO gostou no seminário
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$nao_gostou_seminario)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação sobre o que não gostou no seminário", side=3, line = 3)
+print("Principais ocorrências sobre o que não gostou no seminário")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+  
+```
+
+Discorrer sobre **o que poderia ser melhorado no seminário:**
+
+```{r melhorias}
+#| echo: false
+# Analisando as respostas discursivas sobre o que poderia ser melhorado no seminário
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$melhorado_apresentacoes)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação sobre o que poderia ser melhorado no seminário", side=3, line = 3)
+print("Principais ocorrênciaso que poderia ser melhorado no seminário")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+
+```
+
+Indicação sobre **qual a razão ou o motivo de não ter participado no seminário:**
+
+```{r nao_participou}
+#| echo: false
+# Dos que não participaram:
+# Qual a razão/motivo de não ter participado?
+# Descobrir as ocorrências
+
+nao_participou <- analise_isincid$nao_participou_motivo
+data_hora <- length(na.omit(str_match(nao_participou, "Indisponibilidade na data  ou horário")))
+dia_semana <- length(na.omit(str_match(nao_participou, "Indisponibilidade no dia da semana")))
+duracao <- length(na.omit(str_match(nao_participou, "Duração")))
+aviso_evento <- length(na.omit(str_match(nao_participou, "Não recebi o aviso do evento")))
+acesso_evento <- length(na.omit(str_match(nao_participou, "Não recebi o acesso pro evento"))) 
+dificuldade_plataforma <- length(na.omit(str_match(nao_participou, "Dificuldade com a plataforma")))
+nao_acesso_plataforma <- length(na.omit(str_match(nao_participou, "Não consegui/tentei acessar a plataforma/site")))
+dificuldade_deslocamento <- length(na.omit(str_match(nao_participou, "Dificuldade de deslocamento")))
+esqueci_evento <- length(na.omit(str_match(nao_participou, "Esqueci do evento")))
+nao_me_inscrevi <- length(na.omit(str_match(nao_participou, "Não me inscrevi")))
+nao_soube_evento <- length(na.omit(str_match(nao_participou, "Não soube do evento antes/a tempo")))
+casos_nao_participou <- c(data_hora, dia_semana, duracao, aviso_evento, acesso_evento, 
+                          dificuldade_plataforma, nao_acesso_plataforma, dificuldade_deslocamento, 
+                          esqueci_evento, nao_me_inscrevi, nao_soube_evento)
+names(casos_nao_participou) <- c("Indisponibilidade na data  ou horário", "Indisponibilidade no dia da semana", "Duração",
+                                 "Não recebi o aviso do evento", "Não recebi o acesso pro evento", "Dificuldade com a plataforma",
+                                 "Não consegui/tentei acessar a plataforma/site", "Dificuldade de deslocamento", "Esqueci do evento",
+                                 "Não me inscrevi", "Não soube do evento antes/a tempo")
+#sort(casos_nao_participou)
+
+df_casos_nao_participou <- data.frame(motivos = c("Indisponibilidade na data  ou horário", "Indisponibilidade no dia da semana", "Duração",
+                                                 "Não recebi o aviso do evento", "Não recebi o acesso pro evento", "Dificuldade com a plataforma",
+                                                 "Não consegui/tentei acessar a plataforma/site", "Dificuldade de deslocamento", "Esqueci do evento",
+                                                 "Não me inscrevi", "Não soube do evento antes/a tempo"),
+                           grupo = casos_nao_participou
+                           
+)
+
+ggplot(df_casos_nao_participou, aes(x=motivos, y=grupo)) +
+  geom_col(width=.6, fill=alpha('blue',3), col='black')+
+  #  geom_text(aes(label=paste(perc,"%")),nudge_y=1.4)+
+  labs(x='Motivo', y='Número de ocorrências')+
+  ggtitle('Principais motivos de não participação')+
+  theme_minimal()+
+  coord_flip()  
+
+```
+
+Discorrer **sobre motivos de não participação no seminário:**
+
+```{r motivos_nao_participou}
+#| echo: false
+# Analisando as respostas discursivas sobre motivos de não participação no seminário
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$nao_participou_descricao)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Manifestação sobre motivos de não participação no seminário", side=3, line = 3)
+print("Principais motivos de não participação no seminário")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+
+```
+
+Sugerir **sobre tópicos para os futuros seminários:**
+
+```{r novos_topicos}
+#| echo: false
+# Analisando respostas discursivas sobre tópicos para futuros seminários
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$topicos_futuros_seminarios)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Sugestão de tópicos para os próximos seminários", side=3, line = 3)
+print("Principais sugestõers de tópicos para os próximos seminários")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+
+```
+
+Respostas sobre se **recomendaria o SINCID para outras pessoas**:
+
+```{r recomendaria}
+#| echo: false
+# Recomendaria o seminário
+# Descobrir as ocorrências
+#table(analise_isincid$recomendaria)
+
+# Ocorrências, neste dataset "1-Sim" e "3-Talvez".
+# Não presentes no dataset: "2-Não"                           
+recomendar <- factor(analise_isincid$recomendaria, 
+                                      labels = c("Sim","Talvez"))
+# Recomendaria o seminário
+ggplot(
+  data = analise_isincid,
+  aes (x = recomendar)) +
+  geom_bar(fill = "blue") +
+  ggtitle("                     Recomendaria o seminário a outras pessoas") +
+  ylab( "Respostas") + xlab("Recomendaria") +
+  theme_classic()
+
+``` 
+
+Motivos e/ou razões para **recomendar o SINCID para outras pessoas**:
+
+```{r recomendaria_explique}
+#| echo: false
+# Analisando respostas discursivas sobre se recomendaria o seminário a outras pessoas
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$recomedaria_explique)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Recomendaria o seminário a outras pessoas", side=3, line = 3)
+print("Principais respostas sobre se recomendaria o seminário a outras pessoas")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+
+``` 
+
+**Comentários e/ou Observações finais** sobre o I SINCID:
+
+```{r observacoes_finais}
+#| echo: false
+# Analisando observações finais
+#Carregando o texto e eliminando os NA (missing data)
+texto <- na.omit(analise_isincid$observacao_final)
+
+# Criando um corpus  
+docs <- Corpus(VectorSource(texto))
+
+# Limpando o texto
+# Para utilizar o comando "pipe" (%>%) ou operador "tee pipe" (%T>%) , pode-se "carregar" o pacote magrittr
+docs <- docs %>%
+  tm_map(removeNumbers) %>%
+  tm_map(removePunctuation) %>%
+  tm_map(stripWhitespace)
+docs <- tm_map(docs, content_transformer(tolower))
+docs <- tm_map(docs, removeWords, stopwords("portuguese"))
+
+# Criar uma matriz de termos de documento
+# Uma matriz de termos de documento é uma matriz matemática que descreve a frequência 
+# dos termos que ocorrem em uma coleção de documentos.
+dtm <- TermDocumentMatrix(docs) 
+matrix <- as.matrix(dtm) 
+words <- sort(rowSums(matrix),decreasing=TRUE) 
+df <- data.frame(word = names(words),freq=words)
+
+# Gerar a núvem de palavras
+set.seed(1234) # para reprodutibilidade 
+wordcloud(words = df$word, freq = df$freq, min.freq = 1, # menor "min.freq", maior/precisão, menor número/palavras     
+          max.words=200, random.order=FALSE, rot.per=0.35,       
+          colors=brewer.pal(8, "Dark2"))
+mtext("Observações finais", side=3, line = 3)
+print("Principais observações finais")
+for (k in 1:length (which(pmax(df$freq) > 1))) {
+  print(paste(df$word[k], df$freq[k],sep = " = " ))
+}      
+
+``` 
+
+## Conclusões preliminares
+
+
+[^1]: Insight é a compreensão de uma causa e efeito específica dentro de um contexto particular. O termo insight pode ter vários significados relacionados. Uma otra definição de insight em português seria "a capacidade de uma pessoa obter uma compreensão intuitiva precisa e profunda de alguma coisa". A palavra insight também é frequentemente usada no mundo dos negócios, adquirindo o sentido de ideia que pode ser inovadora ou que pode ser a solução para determinado problema da empresa. Yasmin (s/d).
+
+[^2]: A teoria da decisão (ou teoria da escolha) é um ramo da teoria da [probabilidade](https://en.wikipedia.org/wiki/Probability_theory "Probability theory") aplicada e da [filosofia analítica](https://en.wikipedia.org/wiki/Analytic_philosophy "Analytic philosophy") preocupada com a tomada de decisões com base na atribuição de [probabilidades](https://en.wikipedia.org/wiki/Probabilities "Probabilities") a vários fatores e na atribuição de [consequências numéricas](https://en.wikipedia.org/wiki/Statistical_significance "Statistical significance") ao resultado. Dictionary.com (2020).
+
+[^3]: Os modelos de análise preditiva são projetados para avaliar dados históricos, descobrir padrões, observar tendências e usar essas informações para prever tendências futuras. Os modelos populares de análise preditiva incluem modelos de classificação, agrupamento e séries temporais. IBM (s/d).
+
+[^4]: Otimização é uma coleção de princípios matemáticos e métodos usados para resolver problemas quantitativos em muitas disciplinas, incluindo física, biologia, engenharia, economia e negócios. Britannica (s/d).
+
+[^5]: Um evento híbrido é uma exposição, conferência, desconferência (reunião conduzida pelos participantes que tentam evitar os aspectos hierárquicos de uma conferência convencional), seminário, workshop ou outra reunião que combina um evento presencial "ao vivo" com um componente on-line "virtual". Wikipedia contributors (2023).
+
+[^6]: Patrocinadores e apoiadores relacionados no site do seminário em: [I SINCID LINDA](https://eventos.faac.unesp.br/sincidlinda2023/).
+
+## Referências
+
+Decision theory Definition and meaning. Dictionary.com, 27 abr. 2020. Disponível em: [https://www.dictionary.com/browse/decision-theory](https://www.dictionary.com/browse/decision-theory). Acesso em: 04 dez. 2023.
+
+Optimization. Britannica. Disponível em: [https://www.britannica.com/science/optimization/The-simplex-method](https://www.britannica.com/science/optimization/The-simplex-method). Acesso em: 04 dez. 2023.
+
+Qual a tradução de insight? O que significa?. Definicao.net. Disponível em:  [https://definicao.net/insight/](https://definicao.net/insight/). Acesso em: 04 dez. 2023.
+
+What is predictive analytics?. IBM. Disponível em: [https://www.ibm.com/topics/predictive-analytics](https://www.ibm.com/topics/predictive-analytics). Acesso em: 04 dez. 2023.
+
+Hybrid event. Wikipedia contributors. Wikipedia, The Free Encyclopedia, 7 out. 2023. Acesso em: 4 dez. 2023.
+
