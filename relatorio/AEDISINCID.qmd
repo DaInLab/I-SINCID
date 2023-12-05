@@ -1,7 +1,9 @@
 ---
 title: "Análise exploratória e descritiva inicial do I SINCID" 
 subtitle: "I Seminário Interdisciplinar de Ciência de Dados LInDa"
-author: "João Pedro Albino"
+author: 
+  - João Pedro Albino
+  - Grupo de Pesquisa LInDa
 format: html
 editor: visual
 ---
