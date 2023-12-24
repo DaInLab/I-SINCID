@@ -4,11 +4,11 @@ subtitle: "I Seminário Interdisciplinar de Ciência de Dados LInDa"
 author: 
   - João Pedro Albino
   - Grupo de Pesquisa LInDa
-format: html
+format: docx
 editor: visual
 ---
 
-```{r setup, include=FALSE} 
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
@@ -39,10 +39,17 @@ library(magrittr)
  
 ```
 
-
 ## Introdução
 
 *Ciência de Dados* é uma área interdisciplinar que envolve coleta, processamento, análise e interpretação de dados com o objetivo de extrair conhecimento e *insights*[^1] úteis que podem ser utilizados para tomada de decisões[^2], realizar previsões[^3], otimização[^4] e muito mais.
+
+[^1]: Insight é a compreensão de uma causa e efeito específica dentro de um contexto particular. O termo insight pode ter vários significados relacionados. Uma otra definição de insight em português seria "a capacidade de uma pessoa obter uma compreensão intuitiva precisa e profunda de alguma coisa". A palavra insight também é frequentemente usada no mundo dos negócios, adquirindo o sentido de ideia que pode ser inovadora ou que pode ser a solução para determinado problema da empresa. Yasmin (s/d).
+
+[^2]: A teoria da decisão (ou teoria da escolha) é um ramo da teoria da [probabilidade](https://en.wikipedia.org/wiki/Probability_theory "Probability theory") aplicada e da [filosofia analítica](https://en.wikipedia.org/wiki/Analytic_philosophy "Analytic philosophy") preocupada com a tomada de decisões com base na atribuição de [probabilidades](https://en.wikipedia.org/wiki/Probabilities "Probabilities") a vários fatores e na atribuição de [consequências numéricas](https://en.wikipedia.org/wiki/Statistical_significance "Statistical significance") ao resultado. Dictionary.com (2020).
+
+[^3]: Os modelos de análise preditiva são projetados para avaliar dados históricos, descobrir padrões, observar tendências e usar essas informações para prever tendências futuras. Os modelos populares de análise preditiva incluem modelos de classificação, agrupamento e séries temporais. IBM (s/d).
+
+[^4]: Otimização é uma coleção de princípios matemáticos e métodos usados para resolver problemas quantitativos em muitas disciplinas, incluindo física, biologia, engenharia, economia e negócios. Britannica (s/d).
 
 Por representar uma concepção moderna, a ciência de dados se refere à integração e colaboração de diferentes disciplinas ou campos do conhecimento visando abordar questões complexas de maneira mais completa e integrada, ou seja, como um todo e não de maneira compartimentada.
 
@@ -50,23 +57,27 @@ E também por tratar-se de uma *disciplina* - no sentido de converter-se em novo
 
 Composto por profissionais de diferentes áreas do conhecimento e também por alunos do *Programa de Pós-graduação em Mídia e Tecnologia* (PPG-MiT), da Faculdade de Arquitetura, Artes, Comunicação e Design (FAAC) da Unesp - Campus de Bauru, o grupo de pesquisa LInDa tem como objetivo realizar pesquisas relacionadas à “Ciência de Dados”, e em particular estudar estruturas de dados aonde seja possível extrair **inteligência**.
 
-Neste contexto, **inteligência de dados** na nomenclatura do grupo de pesquisa, refere-se ao estudo e implementação de ferramentas e métodos analíticos para estabelecer uma melhor interpretação dos dados coletados transformados em informações para assim aprimorar sua análise e compreensão de forma a promover uma melhor tomada de decisão e permitir sua utilização em diferentes áreas do conhecimento. 
+Neste contexto, **inteligência de dados** na nomenclatura do grupo de pesquisa, refere-se ao estudo e implementação de ferramentas e métodos analíticos para estabelecer uma melhor interpretação dos dados coletados transformados em informações para assim aprimorar sua análise e compreensão de forma a promover uma melhor tomada de decisão e permitir sua utilização em diferentes áreas do conhecimento.
 
 O grupo de pesquisa LInDa tem como missão pesquisar, de forma multidisciplinar, tópicos relacionados à ciência baseada em dados, onde seja possível extrair conhecimento e propor soluções e algoritmos para trabalhar em temas transversais tais como: *big data*, *cidades inteligentes*, *internet das coisas*, gráficos de conhecimento, inteligência artificial, dentre outros, combinados em diferentes campos de trabalho em estatística e computação para que sejam melhor analisadas e interpretadas e possam contribuir para tomadas de decisões mais assertivas.
 
 Portanto, este **I SINCID LINDA** - *I Seminário Interdisciplinar de Ciência de Dados LInDa* - executado pelos componentes do grupo de pesquisa, foi realizado na modalidade híbrida[^5] e teve como principal desafio abordar *aplicações*, *desafios* e *implicações* na **análise** e no **uso** **dos dados** em diferentes contextos. O seminário visou incentivar a colaboração entre especialistas de diversas áreas e contribuir para uma compreensão mais profunda e multidimensional do campo da Ciência de Dados.
 
+[^5]: Um evento híbrido é uma exposição, conferência, desconferência (reunião conduzida pelos participantes que tentam evitar os aspectos hierárquicos de uma conferência convencional), seminário, workshop ou outra reunião que combina um evento presencial "ao vivo" com um componente on-line "virtual". Wikipedia contributors (2023).
+
 Tendo por base estes objetivos, este primeiro evento buscou também incentivar a colaboração e a troca de conhecimentos entre áreas distintas.
 
 Realizado com o apoio do **PPG-MiT**, contou também com apoio financeiro e de logística da [Diretoria da Faculdade de Arquitetura, Artes, Comunicação e Design](https://www.faac.unesp.br/#!/sobre-a-faac/administracao/diretoria/) da FAAC, recursos financeiros do [PROAP](https://www.faac.unesp.br/#!/pos-graduacao/mestrado-e-doutorado/midia-e-tecnologia---doutorado/recursos-financeiros-do-proap/) - **Programa de Apoio à Pós-graduação -** da **Coordenação de Aperfeiçoamento de Pessoal de Nível Superior** - CAPES -, além do apoio e colaboração de diferentes patrocinadores[^6] o I SINCID LINDA buscou transcender as barreiras tradicionais das disciplinas individuais, tais como: *Engenharia*; *Ciências Humanas* e *Tecnologia*; e foi idealizado para incentivar a colaboração e a troca de conhecimentos entre áreas distintas.
+
+[^6]: Patrocinadores e apoiadores relacionados no site do seminário em: [I SINCID LINDA](https://eventos.faac.unesp.br/sincidlinda2023/).
 
 Contando com um conjunto interdisciplinar de palestrantes convidados, as apresentações realizadas no seminário explorou diferentes formas de aplicações, debateu os preementes desafios no mundo de hoje sobre o uso dos dados e procurou mostrar quais as implicações do emprego da ciência de dados em suas diversas áreas de atuação.
 
 O seminário contou também com apresentação e discussão de trabalhos submetidos e aprovados nos três Grupos de Trabalho (GTs) além da apresentação e debates sobre os trabalhos desenvolvidos por integrantes atuais e egressos do grupo LInDa.
 
-Visando avaliar o seminário, solicitou-se aos participantes que se inscreveram, e mesmo àqules que não puderam ou conseguiram se inscrever ou participar do evento, que opinassem sobre sua estrutura, organização e conteúdo, sugestões de melhorias além de solicitar também sugestões à respeito de temas ou tópicos visando aprimorar as próximas conferências. Para tanto, foi elaborado um questionário de pesquisa em Google Forms. 
+Visando avaliar o seminário, solicitou-se aos participantes que se inscreveram, e mesmo àqules que não puderam ou conseguiram se inscrever ou participar do evento, que opinassem sobre sua estrutura, organização e conteúdo, sugestões de melhorias além de solicitar também sugestões à respeito de temas ou tópicos visando aprimorar as próximas conferências. Para tanto, foi elaborado um questionário de pesquisa em Google Forms.
 
-Nos próximos tópicos, será apresentada a Análise Exploratória de Dados (AED) referente aos dados coletados com o questionário. 
+Nos próximos tópicos, será apresentada a Análise Exploratória de Dados (AED) referente aos dados coletados com o questionário.
 
 A AED é procedimento aplicado em conjuntos de dados (ou "datasets") tabulados (dados dispostos em colunas e linhas), de modo a resumir suas características principais, frequentemente utilizando métodos visuais para facilitar sua percepção.
 
@@ -82,8 +93,7 @@ Participaram dessa pesquisa `r nrow(analise_isincid)` respondentes.
 
 ## Análise Exploratória de Dados - Fundamentação teórica
 
-a linguagem R. A linguagem R é  uma linguagem de programação bastante utilizada para análise e visualização de dados. Para criar gráficos em R, você pode utilizar o pacote ggplot2, que é um dos pacotes mais utilizados para esse fim.
-
+a linguagem R. A linguagem R é uma linguagem de programação bastante utilizada para análise e visualização de dados. Para criar gráficos em R, você pode utilizar o pacote ggplot2, que é um dos pacotes mais utilizados para esse fim.
 
 ## Resultados Obtidos
 
@@ -706,7 +716,7 @@ ggplot(
   ylab( "Respostas") + xlab("Recomendaria") +
   theme_classic()
 
-``` 
+```
 
 Motivos e/ou razões para **recomendar o SINCID para outras pessoas**:
 
@@ -747,7 +757,7 @@ for (k in 1:length (which(pmax(df$freq) > 1))) {
   print(paste(df$word[k], df$freq[k],sep = " = " ))
 }      
 
-``` 
+```
 
 **Comentários e/ou Observações finais** sobre o I SINCID:
 
@@ -788,32 +798,18 @@ for (k in 1:length (which(pmax(df$freq) > 1))) {
   print(paste(df$word[k], df$freq[k],sep = " = " ))
 }      
 
-``` 
+```
 
 ## Conclusões preliminares
 
-
-[^1]: Insight é a compreensão de uma causa e efeito específica dentro de um contexto particular. O termo insight pode ter vários significados relacionados. Uma otra definição de insight em português seria "a capacidade de uma pessoa obter uma compreensão intuitiva precisa e profunda de alguma coisa". A palavra insight também é frequentemente usada no mundo dos negócios, adquirindo o sentido de ideia que pode ser inovadora ou que pode ser a solução para determinado problema da empresa. Yasmin (s/d).
-
-[^2]: A teoria da decisão (ou teoria da escolha) é um ramo da teoria da [probabilidade](https://en.wikipedia.org/wiki/Probability_theory "Probability theory") aplicada e da [filosofia analítica](https://en.wikipedia.org/wiki/Analytic_philosophy "Analytic philosophy") preocupada com a tomada de decisões com base na atribuição de [probabilidades](https://en.wikipedia.org/wiki/Probabilities "Probabilities") a vários fatores e na atribuição de [consequências numéricas](https://en.wikipedia.org/wiki/Statistical_significance "Statistical significance") ao resultado. Dictionary.com (2020).
-
-[^3]: Os modelos de análise preditiva são projetados para avaliar dados históricos, descobrir padrões, observar tendências e usar essas informações para prever tendências futuras. Os modelos populares de análise preditiva incluem modelos de classificação, agrupamento e séries temporais. IBM (s/d).
-
-[^4]: Otimização é uma coleção de princípios matemáticos e métodos usados para resolver problemas quantitativos em muitas disciplinas, incluindo física, biologia, engenharia, economia e negócios. Britannica (s/d).
-
-[^5]: Um evento híbrido é uma exposição, conferência, desconferência (reunião conduzida pelos participantes que tentam evitar os aspectos hierárquicos de uma conferência convencional), seminário, workshop ou outra reunião que combina um evento presencial "ao vivo" com um componente on-line "virtual". Wikipedia contributors (2023).
-
-[^6]: Patrocinadores e apoiadores relacionados no site do seminário em: [I SINCID LINDA](https://eventos.faac.unesp.br/sincidlinda2023/).
-
 ## Referências
 
-Decision theory Definition and meaning. Dictionary.com, 27 abr. 2020. Disponível em: [https://www.dictionary.com/browse/decision-theory](https://www.dictionary.com/browse/decision-theory). Acesso em: 04 dez. 2023.
+Decision theory Definition and meaning. Dictionary.com, 27 abr. 2020. Disponível em: <https://www.dictionary.com/browse/decision-theory>. Acesso em: 04 dez. 2023.
 
-Optimization. Britannica. Disponível em: [https://www.britannica.com/science/optimization/The-simplex-method](https://www.britannica.com/science/optimization/The-simplex-method). Acesso em: 04 dez. 2023.
+Optimization. Britannica. Disponível em: <https://www.britannica.com/science/optimization/The-simplex-method>. Acesso em: 04 dez. 2023.
 
-Qual a tradução de insight? O que significa?. Definicao.net. Disponível em:  [https://definicao.net/insight/](https://definicao.net/insight/). Acesso em: 04 dez. 2023.
+Qual a tradução de insight? O que significa?. Definicao.net. Disponível em: <https://definicao.net/insight/>. Acesso em: 04 dez. 2023.
 
-What is predictive analytics?. IBM. Disponível em: [https://www.ibm.com/topics/predictive-analytics](https://www.ibm.com/topics/predictive-analytics). Acesso em: 04 dez. 2023.
+What is predictive analytics?. IBM. Disponível em: <https://www.ibm.com/topics/predictive-analytics>. Acesso em: 04 dez. 2023.
 
 Hybrid event. Wikipedia contributors. Wikipedia, The Free Encyclopedia, 7 out. 2023. Acesso em: 4 dez. 2023.
-
